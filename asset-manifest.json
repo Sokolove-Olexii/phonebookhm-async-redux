@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/phonebookhm-async-redux/static/css/main.72220bfc.css",
+    "main.js": "/phonebookhm-async-redux/static/js/main.6b86f535.js",
+    "index.html": "/phonebookhm-async-redux/index.html",
+    "main.72220bfc.css.map": "/phonebookhm-async-redux/static/css/main.72220bfc.css.map",
+    "main.6b86f535.js.map": "/phonebookhm-async-redux/static/js/main.6b86f535.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.72220bfc.css",
+    "static/js/main.6b86f535.js"
+  ]
+}
