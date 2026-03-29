@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "../redux/filterSlice";
 import styled from "styled-components";
+import { selectFilter } from "../redux/selectors";
 
 const InputForm = styled.input`
   width: 90%;
@@ -20,7 +21,7 @@ const InputForm = styled.input`
 const Filter = () => {
   const dispatch = useDispatch();
 
-  const value = useSelector((state) => state.filter);
+  const value = useSelector(selectFilter);
 
   const onChange = (e) => {
     dispatch(setFilter(e.target.value));

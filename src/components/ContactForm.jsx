@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addContact } from "../redux/operations";
 import { useState } from "react";
 import styled from "styled-components";
+import { selectContacts } from "../redux/selectors";
 
 const Form = styled.form`
   display: flex;
@@ -46,7 +47,8 @@ const ContactForm = () => {
   const [number, setNumber] = useState("");
 
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
+
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (e) => {
     e.preventDefault();
