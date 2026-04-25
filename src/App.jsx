@@ -1,69 +1,69 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "./redux/operations";
-import styled from "styled-components";
-import ContactForm from "./components/ContactForm";
-import ContactList from "./components/ContactList";
-import Filter from "./components/Filter";
-
-const MainAppSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  min-height: 100vh;
-  padding: 40px 0;
-`;
-
-const Title = styled.h1`
-  font-size: 35px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #333;
-`;
-
-const SubTitle = styled.h2`
-  margin-top: 40px;
-  font-size: 30px;
-  color: #444;
-  border-bottom: 2px solid #444;
-  padding-bottom: 5px;
-`;
-
-const Card = styled.div`
-  background: #fff;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  text-align: center;
-  margin: 20px;
-`;
+import { Routes, Route } from "react-router-dom";
+import Contacts from "./pages/Contacts";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import PassReset from "./pages/PassReset";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { RestrictedRoute } from "./components/RestrictedRoute";
+import { refreshUser } from "./redux/auth/operations";
+import { selectIsRefreshing } from "./redux/auth/selectors";
 
 const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.contacts.isLoading);
-  const error = useSelector((state) => state.contacts.error);
+  const isRefreshing = useSelector(selectIsRefreshing);
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  return (
-    <MainAppSection>
-      <Card>
-        <Title>Phonebook</Title>
-        <ContactForm />
-      </Card>
+  if (isRefreshing) {
+    return <b>Refreshing user...</b>;
+  }
 
-      <Card>
-        <SubTitle>Contacts</SubTitle>
-        <Filter />
-        {isLoading && !error && <p>Loading contacts...</p>}
-        {error && <p style={{ color: "red" }}>Error: {error}</p>}
-        <ContactList />
-      </Card>
-    </MainAppSection>
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute redirectTo="/register" component={<Contacts />} />
+        }
+      />
+      <Route
+        path="/phonebookhm-async-redux"
+        element={
+          <PrivateRoute redirectTo="/register" component={<Contacts />} />
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <RestrictedRoute
+            redirectTo="/phonebookhm-async-redux"
+            component={<Login />}
+          />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <RestrictedRoute
+            redirectTo="/phonebookhm-async-redux"
+            component={<Register />}
+          />
+        }
+      />
+      <Route
+        path="/reset-password"
+        element={
+          <RestrictedRoute
+            redirectTo="/phonebookhm-async-redux"
+            component={<PassReset />}
+          />
+        }
+      />
+    </Routes>
   );
 };
 
